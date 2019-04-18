@@ -1,5 +1,8 @@
 # ignore data files
-/data
+data
+
+# ignore results
+results
 
 # ignore pycache
 __pycache__
