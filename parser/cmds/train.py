@@ -61,8 +61,9 @@ class Train(object):
         params = {
             'n_words': vocab.n_train_words,
             'n_embed': Config.n_embed,
-            'n_tags': vocab.n_tags,
-            'n_tag_embed': Config.n_tag_embed,
+            'n_chars': vocab.n_chars,
+            'n_char_embed': Config.n_char_embed,
+            'n_char_out': Config.n_char_out,
             'embed_dropout': Config.embed_dropout,
             'n_lstm_hidden': Config.n_lstm_hidden,
             'n_lstm_layers': Config.n_lstm_layers,
