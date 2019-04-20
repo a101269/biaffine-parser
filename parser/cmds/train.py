@@ -33,12 +33,11 @@ class Train(object):
         train = Corpus.load(args.ftrain)
         dev = Corpus.load(args.fdev)
         test = Corpus.load(args.ftest)
-        embed = Embedding.load(args.fembed)
         if os.path.exists(args.vocab):
             vocab = torch.load(args.vocab)
         else:
             vocab = Vocab.from_corpus(corpus=train, min_freq=2)
-            vocab.read_embeddings(embed=embed, unk='unk')
+            vocab.read_embeddings(embed=Embedding.load(args.fembed), unk='unk')
             torch.save(vocab, args.vocab)
         print(vocab)
 
