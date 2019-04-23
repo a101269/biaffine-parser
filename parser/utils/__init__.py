@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from .dataset import TextDataset, collate_fn
-from .reader import Corpus, Embedding
+from .corpus import Corpus
+from .data import TextDataset, collate_fn
+from .embedding import Embedding
 from .vocab import Vocab
 
 
