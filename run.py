@@ -26,8 +26,6 @@ if __name__ == '__main__':
                                help='seed for generating random numbers')
         subparser.add_argument('--threads', '-t', default=4, type=int,
                                help='max num of threads')
-        subparser.add_argument('--buckets', '-b', default=50, type=int,
-                               help='max num of buckets to use')
         subparser.add_argument('--file', '-f', default='exp/tag/model',
                                help='path to model file')
         subparser.add_argument('--vocab', '-v', default='exp/tag/vocab',

@@ -17,6 +17,8 @@ class Train(object):
         subparser = parser.add_parser(
             name, help='Train a model.'
         )
+        subparser.add_argument('--buckets', default=50, type=int,
+                               help='max num of buckets to use')
         subparser.add_argument('--ftrain', default='data/train.conllx',
                                help='path to train file')
         subparser.add_argument('--fdev', default='data/dev.conllx',
