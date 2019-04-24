@@ -73,12 +73,14 @@ Optional arguments of the subparsers are as follows:
 
 ```sh
 $ python run.py train -h
-usage: run.py train [-h] [--ftrain FTRAIN] [--fdev FDEV] [--ftest FTEST]
-                    [--fembed FEMBED] [--device DEVICE] [--seed SEED]
-                    [--threads THREADS] [--file FILE] [--vocab VOCAB]
+usage: run.py train [-h] [--buckets BUCKETS] [--ftrain FTRAIN] [--fdev FDEV]
+                    [--ftest FTEST] [--fembed FEMBED] [--device DEVICE]
+                    [--seed SEED] [--threads THREADS] [--file FILE]
+                    [--vocab VOCAB]
 
 optional arguments:
   -h, --help            show this help message and exit
+  --buckets BUCKETS     max num of buckets to use
   --ftrain FTRAIN       path to train file
   --fdev FDEV           path to dev file
   --ftest FTEST         path to test file
@@ -93,14 +95,16 @@ optional arguments:
                         path to vocabulary file
 
 $ python run.py evaluate -h
-usage: run.py evaluate [-h] [--batch-size BATCH_SIZE] [--include-punct]
-                       [--fdata FDATA] [--device DEVICE] [--seed SEED]
-                       [--threads THREADS] [--file FILE] [--vocab VOCAB]
+usage: run.py evaluate [-h] [--batch-size BATCH_SIZE] [--buckets BUCKETS]
+                       [--include-punct] [--fdata FDATA] [--device DEVICE]
+                       [--seed SEED] [--threads THREADS] [--file FILE]
+                       [--vocab VOCAB]
 
 optional arguments:
   -h, --help            show this help message and exit
   --batch-size BATCH_SIZE
                         batch size
+  --buckets BUCKETS     max num of buckets to use
   --include-punct       whether to include punctuation
   --fdata FDATA         path to dataset
   --device DEVICE, -d DEVICE
