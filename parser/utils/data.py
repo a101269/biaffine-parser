@@ -10,24 +10,29 @@ from torch.utils.data import Dataset, Sampler
 def kmeans(x, k):
     x = torch.tensor(x, dtype=torch.float)
     # initialize k centroids randomly
-    c = x[random.sample(range(len(x)), k)]
+    c, old = x[random.sample(range(len(x)), k)], None
     # assign labels to each datapoint based on centroids
     dists, y = torch.abs_(x.unsqueeze(-1) - c).min(dim=-1)
-    # record the last assignments of all datapoints
-    old = None
 
-    while old is None or not y.equal(old):
-        old = y
-        lengths = y.eq(torch.arange(k).unsqueeze(-1)).sum(dim=-1)
-        empties = lengths.eq(0)
-        if empties.any():
-            farthest = dists.topk(empties.sum())[1]
-            y[farthest] = empties.nonzero().view(-1)
-        c = torch.tensor([x[y.eq(i)].mean() for i in range(k)])
+    while old is None or not c.equal(old):
+        # handle the empty clusters
+        for i in range(k):
+            # choose the farthest datapoint from the biggest cluster
+            # and move that the empty cluster
+            if not y.eq(i).any():
+                mask = y.eq(torch.arange(k).unsqueeze(-1))
+                lens = mask.sum(dim=-1)
+                biggest = mask[lens.argmax()].nonzero().view(-1)
+                farthest = dists[biggest].argmax()
+                y[biggest[farthest]] = i
+        # update the centroids
+        c, old = torch.tensor([x[y.eq(i)].mean() for i in range(k)]), c
+        # re-assign all datapoints to clusters
         dists, y = torch.abs_(x.unsqueeze(-1) - c).min(dim=-1)
-    y = [y.eq(i).nonzero().view(-1).tolist() for i in range(k)]
+    clusters = [y.eq(i) for i in range(k)]
+    clusters = [i.nonzero().view(-1).tolist() for i in clusters if i.any()]
 
-    return y
+    return clusters
 
 
 def collate_fn(data):
@@ -64,6 +69,7 @@ class TextDataset(Dataset):
         super(TextDataset, self).__init__()
 
         self.items = items
+        # NOTE: the final number of buckets should be less or equal to n_buckets
         self.buckets = kmeans(x=[len(i) for i in self.items[0]], k=n_buckets)
 
     def __repr__(self):

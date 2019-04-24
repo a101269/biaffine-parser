@@ -21,7 +21,7 @@ class Model(object):
     def __call__(self, loaders, epochs, patience,
                  lr, betas, epsilon, annealing, file):
         total_time = timedelta()
-        max_e, max_metric = 1, 0.0
+        max_e, max_metric = 1, AttachmentMethod()
         train_loader, dev_loader, test_loader = loaders
         self.optimizer = optim.Adam(params=self.network.parameters(),
                                     lr=lr, betas=betas, eps=epsilon)
