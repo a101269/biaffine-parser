@@ -21,7 +21,7 @@ class Model(object):
     def __call__(self, loaders, epochs, patience,
                  lr, betas, epsilon, annealing, file):
         total_time = timedelta()
-        max_e, max_metric = 0, 0.0
+        max_e, max_metric = 1, 0.0
         train_loader, dev_loader, test_loader = loaders
         self.optimizer = optim.Adam(params=self.network.parameters(),
                                     lr=lr, betas=betas, eps=epsilon)
@@ -44,15 +44,15 @@ class Model(object):
             t = datetime.now() - start
             # save the model if it is the best so far
             if dev_metric > max_metric and epoch > patience:
-                self.network.save(file + f".{epoch}")
                 max_e, max_metric = epoch, dev_metric
+                self.network.save(file + f".{max_e}")
                 print(f"{t}s elapsed (saved)\n")
             else:
                 print(f"{t}s elapsed\n")
             total_time += t
             if epoch - max_e >= patience:
                 break
-        self.network = BiaffineParser.load(file)
+        self.network = BiaffineParser.load(file + f".{max_e}")
         loss, metric = self.evaluate(test_loader)
 
         print(f"max score of dev is {max_metric.score:.2%} at epoch {max_e}")

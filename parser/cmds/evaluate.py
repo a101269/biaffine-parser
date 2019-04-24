@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from parser import BiaffineParser, Model
-from parser.utils import Corpus, TextDataset, collate_fn
+from parser.utils import Corpus
+from parser.utils.data import TextDataset, TextSampler, collate_fn
 
 import torch
 from torch.utils.data import DataLoader
@@ -31,10 +32,11 @@ class Evaluate(object):
 
         print("Load the dataset")
         corpus = Corpus.load(args.fdata)
-        dataset = TextDataset(vocab.numericalize(corpus))
+        dataset = TextDataset(vocab.numericalize(corpus), args.buckets)
         # set the data loader
         loader = DataLoader(dataset=dataset,
                             batch_size=args.batch_size,
+                            sampler=TextSampler(dataset.buckets),
                             collate_fn=collate_fn)
 
         print("Evaluate the dataset")

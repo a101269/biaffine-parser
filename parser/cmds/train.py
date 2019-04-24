@@ -2,7 +2,8 @@
 
 import os
 from parser import BiaffineParser, Model
-from parser.utils import Corpus, Embedding, TextDataset, Vocab, collate_fn
+from parser.utils import Corpus, Embedding, Vocab
+from parser.utils.data import TextDataset, TextSampler, collate_fn
 
 import torch
 from torch.utils.data import DataLoader
@@ -42,19 +43,21 @@ class Train(object):
         print(vocab)
 
         print("Load the dataset")
-        trainset = TextDataset(vocab.numericalize(train))
-        devset = TextDataset(vocab.numericalize(dev))
-        testset = TextDataset(vocab.numericalize(test))
+        trainset = TextDataset(vocab.numericalize(train), args.buckets)
+        devset = TextDataset(vocab.numericalize(dev), args.buckets)
+        testset = TextDataset(vocab.numericalize(test), args.buckets)
         # set the data loaders
         train_loader = DataLoader(dataset=trainset,
                                   batch_size=Config.batch_size,
-                                  shuffle=True,
+                                  sampler=TextSampler(trainset.buckets, True),
                                   collate_fn=collate_fn)
         dev_loader = DataLoader(dataset=devset,
                                 batch_size=Config.batch_size,
+                                sampler=TextSampler(devset.buckets),
                                 collate_fn=collate_fn)
         test_loader = DataLoader(dataset=testset,
                                  batch_size=Config.batch_size,
+                                 sampler=TextSampler(testset.buckets),
                                  collate_fn=collate_fn)
         print(f"  size of trainset: {len(trainset)}")
         print(f"  size of devset: {len(devset)}")

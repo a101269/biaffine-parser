@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from parser import BiaffineParser, Model
-from parser.utils import Corpus, TextDataset, collate_fn
+from parser.utils import Corpus
+from parser.utils.data import TextDataset, collate_fn
 
 import torch
 from torch.utils.data import DataLoader
