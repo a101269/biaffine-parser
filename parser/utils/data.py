@@ -69,7 +69,7 @@ class TextDataset(Dataset):
         super(TextDataset, self).__init__()
 
         self.items = items
-        # NOTE: the final number of buckets should be less or equal to n_buckets
+        # NOTE: the final bucket count is less than or equal to n_buckets
         self.buckets = kmeans(x=[len(i) for i in self.items[0]], k=n_buckets)
 
     def __repr__(self):
