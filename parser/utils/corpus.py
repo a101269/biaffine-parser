@@ -6,7 +6,8 @@ from collections import namedtuple
 Sentence = namedtuple(typename='Sentence',
                       field_names=['ID', 'FORM', 'LEMMA', 'CPOS',
                                    'POS', 'FEATS', 'HEAD', 'DEPREL',
-                                   'PHEAD', 'PDEPREL'])
+                                   'PHEAD', 'PDEPREL'],
+                      defaults=[None]*10)
 
 
 class Corpus(object):
@@ -31,23 +32,19 @@ class Corpus(object):
 
     @property
     def words(self):
-        return [[self.ROOT] + list(sentence.FORM)
-                for sentence in self.sentences]
+        return [[self.ROOT] + list(sentence.FORM) for sentence in self]
 
     @property
     def tags(self):
-        return [[self.ROOT] + list(sentence.POS)
-                for sentence in self.sentences]
+        return [[self.ROOT] + list(sentence.POS) for sentence in self]
 
     @property
     def heads(self):
-        return [[0] + list(map(int, sentence.HEAD))
-                for sentence in self.sentences]
+        return [[0] + list(map(int, sentence.HEAD)) for sentence in self]
 
     @property
     def rels(self):
-        return [[self.ROOT] + list(sentence.DEPREL)
-                for sentence in self.sentences]
+        return [[self.ROOT] + list(sentence.DEPREL) for sentence in self]
 
     @heads.setter
     def heads(self, sequences):

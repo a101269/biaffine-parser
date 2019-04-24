@@ -109,7 +109,7 @@ class Model(object):
         self.network.eval()
 
         all_arcs, all_rels = [], []
-        for words, tags, arcs, rels in loader:
+        for words, tags in loader:
             mask = words.ne(self.vocab.pad_index)
             # ignore the first token of each sentence
             mask[:, 0] = 0
